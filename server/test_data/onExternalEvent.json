@@ -1,0 +1,12 @@
+{
+  "data": {
+    "_id": "8d42de3a-2eb9-4506-9529-5fccf8b58fe7",
+    "topic": "messages",
+    "resource": "0d902fd8f085496f9e53f93addceed0b",
+    "user_id": 1168105783,
+    "application_id": 4902771371848937,
+    "sent": "2022-12-28T18:21:44.527Z",
+    "attempts": 1,
+    "received": "2022-12-28T18:21:44.207Z"
+  }
+}
