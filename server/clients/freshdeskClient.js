@@ -3,11 +3,11 @@ const axios = require('axios');
 const { format } = require('date-fns');
 const { toBase64 } = require('../utils/toBase64');
 
-
 class FreshdeskClient {
     constructor() {
         this.clienteML = new MercadolibreClient()
         this.authFresh = toBase64()
+        this.cuentaFresh = 'snoopfreshdesktest'
     }
 
     async crearTicket(dataTicket, idML, usuarioId) {
@@ -15,7 +15,7 @@ class FreshdeskClient {
 
         const options = {
             method: 'POST',
-            url: 'https://snoopcx.freshdesk.com/api/v2/tickets',
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ class FreshdeskClient {
 
         const options = {
             method: 'POST',
-            url: 'https://snoopcx.freshdesk.com/api/v2/tickets',
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ class FreshdeskClient {
 
         const options = {
             method: 'POST',
-            url: 'https://snoopcx.freshdesk.com/api/v2/tickets',
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ class FreshdeskClient {
     async getAllTickets() {
         const options = {
             method: 'GET',
-            url: 'https://snoopcx.freshdesk.com/api/v2/tickets',
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 Authorization: `Basic ${this.authFresh}`
@@ -166,7 +166,7 @@ class FreshdeskClient {
     async getTicket(ticket_id) {
         const options = {
             method: 'GET',
-            url: `https://snoopcx.freshdesk.com/api/v2/tickets/${ticket_id}`,
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets/${ticket_id}`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 Authorization: `Basic ${this.authFresh}`
@@ -188,7 +188,7 @@ class FreshdeskClient {
     async getConversacionTicket(ticket_id) {
         const options = {
             method: 'GET',
-            url: `https://snoopcx.freshdesk.com/api/v2/tickets/${ticket_id}/conversations`,
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets/${ticket_id}/conversations`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 Authorization: `Basic ${this.authFresh}`
@@ -210,7 +210,7 @@ class FreshdeskClient {
     async responderConversacion(ticketId, body) {
         const options = {
             method: 'POST',
-            url: `https://snoopcx.freshdesk.com/api/v2/tickets/${ticketId}/reply`,
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets/${ticketId}/reply`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ class FreshdeskClient {
     async updateTicket(ticketId, data) {
         const options = {
             method: 'PUT',
-            url: `https://snoopcx.freshdesk.com/api/v2/tickets/${ticketId}`,
+            url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets/${ticketId}`,
             headers: {
                 cookie: '_x_w=41; _x_m=x_c',
                 'Content-Type': 'application/json',

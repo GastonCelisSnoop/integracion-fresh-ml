@@ -1,12 +1,12 @@
 {
   "data": {
-    "_id": "8d42de3a-2eb9-4506-9529-5fccf8b58fe7",
-    "topic": "messages",
-    "resource": "0d902fd8f085496f9e53f93addceed0b",
+    "_id": "6ed488e9-bef1-4f8e-9c92-68b495eadc07",
+    "topic": "questions",
+    "resource": "/questions/12568754638",
     "user_id": 1168105783,
     "application_id": 4902771371848937,
-    "sent": "2022-12-28T18:21:44.527Z",
+    "sent": "2022-12-13T16:31:25.813Z",
     "attempts": 1,
-    "received": "2022-12-28T18:21:44.207Z"
+    "received": "2022-12-13T16:31:25.698Z"
   }
 }

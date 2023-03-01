@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.33% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/60</span>
+                <span class='fraction'>20/60</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5% </span>
+                <span class="strong">10% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/20</span>
+                <span class='fraction'>2/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">41.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/12</span>
+                <span class='fraction'>5/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.86% </span>
+                <span class="strong">33.96% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/53</span>
+                <span class='fraction'>18/53</span>
             </div>
         
             
@@ -179,15 +179,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1789x</span>
+<span class="cline-any cline-yes">1789x</span>
+<span class="cline-any cline-yes">21876x</span>
+<span class="cline-any cline-yes">1550x</span>
+<span class="cline-any cline-yes">1545x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1542x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,8 +194,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1542x</span>
+<span class="cline-any cline-yes">1542x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -284,14 +284,14 @@ class ContainerExternalEvents {
         this.clientFresh = new FreshdeskClient()
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    as</span>ync handlerTktPreVenta(event){
-        const idML = <span class="cstat-no" title="statement not covered" >Number(event.data.resource.split('/')[2])</span>
-        const allTickets = <span class="cstat-no" title="statement not covered" >await this.clientFresh.getAllTickets()</span>
-        const ticket = <span class="cstat-no" title="statement not covered" >allTickets.find(<span class="fstat-no" title="function not covered" >ti</span>cket =&gt; <span class="cstat-no" title="statement not covered" >Number(ticket.custom_fields.cf_id_mercadolibre) === idML)</span></span>
-        const pregunta = <span class="cstat-no" title="statement not covered" >await this.clienteML.getPregunta(idML)</span>
-        const item = <span class="cstat-no" title="statement not covered" >await this.clienteML.getItem(idML)</span>
+    async handlerTktPreVenta(event){
+        const idML = Number(event.data.resource.split('/')[2])
+        const allTickets = await this.clientFresh.getAllTickets()
+        const ticket = allTickets.find(ticket =&gt; Number(ticket.custom_fields.cf_id_mercadolibre) === idML)
+        const pregunta = await this.clienteML.getPregunta(idML)
+        const item = await this.clienteML.getItem(idML)
         
-        const dataTicket = <span class="cstat-no" title="statement not covered" >{</span>
+        const dataTicket = {
             text: pregunta.text,
             link: item.permalink,
             title: item.title,
@@ -302,8 +302,8 @@ class ContainerExternalEvents {
             start_time: item.start_time
         }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if(ticket === undefined){</span>
-<span class="cstat-no" title="statement not covered" >            await this.clientFresh.crearTicket(dataTicket, idML, pregunta.from.id)</span>
+        <span class="missing-if-branch" title="else path not taken" >E</span>if(ticket === undefined){
+            await this.clientFresh.crearTicket(dataTicket, idML, pregunta.from.id)
         } else{
 <span class="cstat-no" title="statement not covered" >            console.log(`El ticket ${ticket.id} ya está creado`)</span>
         }
@@ -388,7 +388,7 @@ exports = ContainerExternalEvents</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-09T13:55:12.886Z
+                at 2023-03-01T15:37:04.869Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
