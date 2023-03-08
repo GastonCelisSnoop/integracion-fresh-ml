@@ -35,19 +35,39 @@ class ContainerExternalEvents {
     async handlerTktPostVenta(event){
         const mensajePostVenta = await this.clienteML.getMensajePostVenta(event.data.resource) 
         const allTickets = await this.clientFresh.getAllTickets()
-        const ticket = allTickets.find(ticket => ticket.custom_fields.cf_id_ml_posventa === event.data.resource)
+        const ticket = allTickets.find(ticket => ticket.custom_fields.cf_id_mlposventa === event.data.resource)
+        const idOrden = mensajePostVenta.messages[0].message_resources[0].id
+        const dataOrden = await this.clienteML.getOrdenCompra(idOrden)
+        const idItem = dataOrden.order_items[0].item.id
+        const dataItem = await this.clienteML.getItem(idItem)
+
+        const dataMensajePostVenta = {
+            idUsuario: mensajePostVenta.messages[0].from.user_id,
+            text: mensajePostVenta.messages[0].text,
+            link: dataItem.permalink,
+            title: dataItem.title,
+            pictures: dataItem.pictures,
+            price: dataItem.price,
+            initial_quantity: dataItem.initial_quantity,
+            available_quantity: dataItem.available_quantity,
+            start_time: dataItem.start_time
+        }
 
         if(ticket === undefined){
-            await this.clientFresh.crearTicketPostVenta(mensajePostVenta, event.data.resource)
+            await this.clientFresh.crearTicketPostVenta(dataMensajePostVenta, event.data.resource)
 
         } else{
             const conversations = await this.clientFresh.getConversacionTicket(ticket.id)
             const infoTicket = await this.clientFresh.getTicket(ticket.id)
             const textsConversations = conversations.map(text => text.body_text)
-            textsConversations.push(infoTicket.description_text)
+            const msjUnico = infoTicket.description_text.split('Mensaje:')
+            const dataMsjUnico = msjUnico[1].trim()
+            textsConversations.push(infoTicket.description_text, dataMsjUnico)
 
             if(!textsConversations.includes(mensajePostVenta.messages[0].text.trim())){
                 await this.clientFresh.responderConversacion(ticket.id, mensajePostVenta.messages[0].text)
+            } else{
+                console.log(`El mensaje postventa ya está en el ticket: ${ticket.id}`)
             }
         }
     }
@@ -58,18 +78,40 @@ class ContainerExternalEvents {
         const ultimoReclamo = mensajeReclamo.filter(mensaje => mensaje.sender_role === 'complainant')[0]
         const allTickets = await this.clientFresh.getAllTickets()
         const ticket = allTickets.find(ticket => Number(ticket.custom_fields.cf_id_reclamoml) === Number(idReclamo))
+        const detalleReclamo = await this.clienteML.getDetalleReclamo(idReclamo)
+        const idUsuarioReclamo = detalleReclamo.players.find(detalle => detalle.role === "complainant").user_id
+        const usuario = await this.clienteML.getUsuario(idUsuarioReclamo)
+        const dataOrden = await this.clienteML.getOrdenCompra(detalleReclamo.resource_id)
+        const idItem = dataOrden.order_items[0].item.id
+        const dataItem = await this.clienteML.getItem(idItem)
+
+        const dataMensajeReclamo = {
+            usuario: usuario,
+            text: ultimoReclamo.message,
+            link: dataItem.permalink,
+            title: dataItem.title,
+            pictures: dataItem.pictures,
+            price: dataItem.price,
+            initial_quantity: dataItem.initial_quantity,
+            available_quantity: dataItem.available_quantity,
+            start_time: dataItem.start_time
+        }
 
         if(ticket === undefined){
-            await this.clientFresh.crearTicketReclamo(ultimoReclamo.message, idReclamo)
+            await this.clientFresh.crearTicketReclamo(dataMensajeReclamo, idReclamo)
 
         } else{
             const conversations = await this.clientFresh.getConversacionTicket(ticket.id)
             const infoTicket = await this.clientFresh.getTicket(ticket.id)
             const textsConversations = conversations.map(text => text.body_text)
-            textsConversations.push(infoTicket.description_text)
+            const msjUnico = infoTicket.description_text.split('Reclamo:')
+            const dataMsjUnico = msjUnico[1].trim()
+            textsConversations.push(infoTicket.description_text, dataMsjUnico)
 
             if(!textsConversations.includes(ultimoReclamo.message)){
                 await this.clientFresh.responderConversacion(ticket.id, ultimoReclamo.message)
+            } else{
+                console.log(`El reclamo ya está en el ticket: ${ticket.id}`)
             }
         }
     }

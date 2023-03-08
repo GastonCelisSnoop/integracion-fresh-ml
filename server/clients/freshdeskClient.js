@@ -23,26 +23,27 @@ class FreshdeskClient {
             },
             data: {
                 description: `
-                <h2 style="font-weight: bold; margin-bottom: 35px;">Pregunta: ${dataTicket.text}</h2>
+                <div style="width: %100; padding: 10px; background-color: rgb(231 231 231); margin-bottom: 20px; border: solid 1px rgb(231 231 231); border-radius: 5px;">
+                    <h3 style="margin-top: 0px; border-bottom: solid 1px black; text-align: center; padding-bottom: 10px;">${dataTicket.title}</h3>
 
-                <div style="width: max-content; padding: 10px; background-color: rgb(231 231 231); margin-bottom: 20px; border: solid 1px rgb(231 231 231); border-radius: 5px;">
-                    <h3 style="margin-top: 0px">${dataTicket.title}</h3>
-
-                    <div style="margin-top: 15px; margin-bottom: 20px; width: 100%">
+                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 3px; margin-top: 15px; margin-bottom: 20px; width: 100%";>
                         ${dataTicket.pictures.map(img => `
-                            <img style="width: 150px; height: 150px;" src=${img.secure_url}>
+                            <img style="width: 150px; height: 150px; border-radius: 3px" src=${img.secure_url}>
                         `)}
                     </div>
 
-                    <p>Precio: $ ${dataTicket.price}</p>
-                    <p style="margin-top: 5px;">Cantidad Inicial: ${dataTicket.initial_quantity}</p>
-                    <p style="margin-top: 5px;">Cantidad Disponible: ${dataTicket.available_quantity}</p>
-                    <p style="margin-top: 5px;">Inicio de la publicación: ${format(new Date(dataTicket.start_time), 'dd-MM-yyyy')}</p>
+                    <ul style="padding-left: 3%;">
+                        <li><span style="font-weight: bold;">Precio:</span> $ ${dataTicket.price}</li>
+                        <li><span style="font-weight: bold;">Cantidad Inicial:</span> ${dataTicket.initial_quantity}</li>
+                        <li><span style="font-weight: bold;">Cantidad Disponible:</span> ${dataTicket.available_quantity}</li>
+                        <li><span style="font-weight: bold;">Inicio de la publicación:</span> ${format(new Date(dataTicket.start_time), 'dd-MM-yyyy')}</li>
+                        <li><span style="font-weight: bold;">Link de la publicación:</span> <a href="${dataTicket.link}">${dataTicket.link}</a></li>
+                    </ul>
                 </div>
-
-                <p style="margin-top: 25px;">Link de la publicación: <a href="${dataTicket.link}">${dataTicket.link}</a></p>
+                
+                <h2 style="font-weight: bold; margin-top: 20px;">Mensaje: <span style="font-weight: normal;">${dataTicket.text}</span></h2>
                 `,
-                subject: 'Nuevo Ticket de Pregunta de Preventa ML',
+                subject: `Preventa ML: ${dataTicket.title}`,
                 name: usuario.nickname,
                 email: `${usuario.nickname.replace(/\s+/g, '')}@snoopfreshml.com`,
                 type: "ML-Preventa",
@@ -68,7 +69,7 @@ class FreshdeskClient {
     }
 
     async crearTicketPostVenta(dataMensajePostVenta, idMensaje) {
-        const usuario = await this.clienteML.getUsuario(dataMensajePostVenta.messages[0].from.user_id)
+        const usuario = await this.clienteML.getUsuario(dataMensajePostVenta.idUsuario)
 
         const options = {
             method: 'POST',
@@ -79,15 +80,35 @@ class FreshdeskClient {
                 Authorization: `Basic ${this.authFresh}`
             },
             data: {
-                description: dataMensajePostVenta.messages[0].text,
-                subject: 'Nuevo Ticket Pregunta Postventa ML',
+                description: `
+                <div style="width: %100; padding: 10px; background-color: rgb(231 231 231); margin-bottom: 20px; border: solid 1px rgb(231 231 231); border-radius: 5px;">
+                    <h3 style="margin-top: 0px; border-bottom: solid 1px black; text-align: center; padding-bottom: 10px;">${dataMensajePostVenta.title}</h3>
+
+                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 3px; margin-top: 15px; margin-bottom: 20px; width: 100%";>
+                        ${dataMensajePostVenta.pictures.map(img => `
+                            <img style="width: 150px; height: 150px; border-radius: 3px" src=${img.secure_url}>
+                        `)}
+                    </div>
+
+                    <ul style="padding-left: 3%;">
+                        <li><span style="font-weight: bold;">Precio:</span> $ ${dataMensajePostVenta.price}</li>
+                        <li><span style="font-weight: bold;">Cantidad Inicial:</span> ${dataMensajePostVenta.initial_quantity}</li>
+                        <li><span style="font-weight: bold;">Cantidad Disponible:</span> ${dataMensajePostVenta.available_quantity}</li>
+                        <li><span style="font-weight: bold;">Inicio de la publicación:</span> ${format(new Date(dataMensajePostVenta.start_time), 'dd-MM-yyyy')}</li>
+                        <li><span style="font-weight: bold;">Link de la publicación:</span> <a href="${dataMensajePostVenta.link}">${dataMensajePostVenta.link}</a></li>
+                    </ul>
+                </div>
+                
+                <h2 style="font-weight: bold; margin-top: 20px;">Mensaje: <span style="font-weight: normal;">${dataMensajePostVenta.text}</span></h2>
+                `,
+                subject: `Postventa ML: ${dataMensajePostVenta.title}`,
                 name: usuario.nickname,
                 email: `${usuario.nickname}@snoopfreshml.com`,
                 type: "ML-Postventa",
                 priority: 1,
                 status: 2,
                 custom_fields: {
-                    "cf_id_ml_posventa": idMensaje
+                    "cf_id_mlposventa": idMensaje
                 }
             }
         };
@@ -104,10 +125,6 @@ class FreshdeskClient {
     }
 
     async crearTicketReclamo(dataMensajeReclamo, idReclamo) {
-        const detalleReclamo = await this.clienteML.getDetalleReclamo(idReclamo)
-        const idUsuarioReclamo = detalleReclamo.players.find(detalle => detalle.role === "complainant").user_id
-        const usuario = await this.clienteML.getUsuario(idUsuarioReclamo)
-
         const options = {
             method: 'POST',
             url: `https://${this.cuentaFresh}.freshdesk.com/api/v2/tickets`,
@@ -117,10 +134,30 @@ class FreshdeskClient {
                 Authorization: `Basic ${this.authFresh}`
             },
             data: {
-                description: dataMensajeReclamo,
-                subject: 'Nuevo Ticket Reclamo Postventa ML',
-                name: usuario.nickname,
-                email: `${usuario.nickname}@snoopfreshml.com`,
+                description: `
+                <div style="width: %100; padding: 10px; background-color: rgb(231 231 231); margin-bottom: 20px; border: solid 1px rgb(231 231 231); border-radius: 5px;">
+                    <h3 style="margin-top: 0px; border-bottom: solid 1px black; text-align: center; padding-bottom: 10px;">${dataMensajeReclamo.title}</h3>
+
+                    <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 3px; margin-top: 15px; margin-bottom: 20px; width: 100%";>
+                        ${dataMensajeReclamo.pictures.map(img => `
+                            <img style="width: 150px; height: 150px; border-radius: 3px" src=${img.secure_url}>
+                        `)}
+                    </div>
+
+                    <ul style="padding-left: 3%;">
+                        <li><span style="font-weight: bold;">Precio:</span> $ ${dataMensajeReclamo.price}</li>
+                        <li><span style="font-weight: bold;">Cantidad Inicial:</span> ${dataMensajeReclamo.initial_quantity}</li>
+                        <li><span style="font-weight: bold;">Cantidad Disponible:</span> ${dataMensajeReclamo.available_quantity}</li>
+                        <li><span style="font-weight: bold;">Inicio de la publicación:</span> ${format(new Date(dataMensajeReclamo.start_time), 'dd-MM-yyyy')}</li>
+                        <li><span style="font-weight: bold;">Link de la publicación:</span> <a href="${dataMensajeReclamo.link}">${dataMensajeReclamo.link}</a></li>
+                    </ul>
+                </div>
+                
+                <h2 style="font-weight: bold; margin-top: 20px;">Reclamo: <span style="font-weight: normal;">${dataMensajeReclamo.text}</span></h2>
+                `,
+                subject: `Reclamo ML: ${dataMensajeReclamo.title}`,
+                name: dataMensajeReclamo.usuario.nickname,
+                email: `${dataMensajeReclamo.usuario.nickname}@snoopfreshml.com`,
                 type: "ML-Postventa",
                 priority: 1,
                 status: 2,

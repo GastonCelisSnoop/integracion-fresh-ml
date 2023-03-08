@@ -121,7 +121,7 @@ class MercadolibreClient {
         const options = {
             method: 'GET',
             url: 'https://api.mercadolibre.com/items',
-            params: { ids: `${pregunta.item_id}` },
+            params: { ids: `${pregunta !== undefined ? pregunta.item_id : id}` },
             headers: {
                 Authorization: `Bearer ${this.tokenML.access_token}`
             }
