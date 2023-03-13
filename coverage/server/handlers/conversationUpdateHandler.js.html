@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -81,39 +81,39 @@
 <a name='L16'></a><a href='#L16'>16</a>
 <a name='L17'></a><a href='#L17'>17</a>
 <a name='L18'></a><a href='#L18'>18</a>
-<a name='L19'></a><a href='#L19'>19</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">34527x</span>
-<span class="cline-any cline-yes">34527x</span>
+<a name='L19'></a><a href='#L19'>19</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1.7650280814927536e+218x</span>
+<span class="cline-any cline-yes">1.7650280814927536e+218x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34527x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1.7650280814927536e+218x</span>
+<span class="cline-any cline-yes">1.7650280814927536e+218x</span>
+<span class="cline-any cline-yes">1.7650280814927536e+218x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1.7650280814927536e+218x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1.7650146155448457e+218x</span>
+<span class="cline-any cline-yes">1.7650146155448457e+218x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4.412530226699032e+217x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34527x</span></td><td class="text"><pre class="prettyprint lang-js">const ContainerConversation = require('../Containers/ContainerConversation')
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1.7650280814927536e+218x</span></td><td class="text"><pre class="prettyprint lang-js">const ContainerConversation = require('../Containers/ContainerConversation')
 const FreshdeskClient = require('../clients/freshdeskClient')
 &nbsp;
-const handlerConversationUpdate = <span class="fstat-no" title="function not covered" >as</span>ync (event) =&gt;{
-    const conversationContainer = <span class="cstat-no" title="statement not covered" >new ContainerConversation()</span>
-    const clientFresh = <span class="cstat-no" title="statement not covered" >new FreshdeskClient()</span>
+const handlerConversationUpdate = async (event) =&gt;{
+    const conversationContainer = new ContainerConversation()
+    const clientFresh = new FreshdeskClient()
 &nbsp;
-    const dataTicket = <span class="cstat-no" title="statement not covered" >await clientFresh.getTicket(event.data.conversation.ticket_id)</span>
+    const dataTicket = await clientFresh.getTicket(event.data.conversation.ticket_id)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if(dataTicket.custom_fields.cf_id_ml_posventa &amp;&amp; dataTicket.custom_fields.cf_id_reclamoml === null) {</span>
-<span class="cstat-no" title="statement not covered" >        await conversationContainer.handlerRespuestaPostventa(event, dataTicket)</span>
+    if(dataTicket.custom_fields.cf_id_mlposventa &amp;&amp; dataTicket.custom_fields.cf_id_user_posventa &amp;&amp; dataTicket.custom_fields.cf_id_reclamoml === null) {
+        await conversationContainer.handlerRespuestaPostventa(event, dataTicket)
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if(dataTicket.custom_fields.cf_id_reclamoml &amp;&amp; dataTicket.custom_fields.cf_id_ml_posventa === null){</span>
-<span class="cstat-no" title="statement not covered" >        await conversationContainer.handlerRespuestaReclamo(event, dataTicket)</span>
+    if(dataTicket.custom_fields.cf_id_reclamoml &amp;&amp; dataTicket.custom_fields.cf_id_mlposventa === null){
+        await conversationContainer.handlerRespuestaReclamo(event, dataTicket)
     }
 }
 &nbsp;
@@ -124,7 +124,7 @@ exports = handlerConversationUpdate</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-08T11:01:59.528Z
+                at 2023-03-13T13:08:08.107Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -33,9 +33,10 @@ class ContainerExternalEvents {
     }
 
     async handlerTktPostVenta(event){
-        const mensajePostVenta = await this.clienteML.getMensajePostVenta(event.data.resource) 
+        const mensajePostVenta = await this.clienteML.getMensajePostVenta(event.data.resource)
+        const idUserPosventa =`${mensajePostVenta.messages[0].from.user_id}-${mensajePostVenta.messages[0].message_resources[0].id}`
         const allTickets = await this.clientFresh.getAllTickets()
-        const ticket = allTickets.find(ticket => ticket.custom_fields.cf_id_mlposventa === event.data.resource)
+        const ticket = allTickets.find(ticket => ticket.custom_fields.cf_id_user_posventa === idUserPosventa)
         const idOrden = mensajePostVenta.messages[0].message_resources[0].id
         const dataOrden = await this.clienteML.getOrdenCompra(idOrden)
         const idItem = dataOrden.order_items[0].item.id
@@ -50,12 +51,15 @@ class ContainerExternalEvents {
             price: dataItem.price,
             initial_quantity: dataItem.initial_quantity,
             available_quantity: dataItem.available_quantity,
-            start_time: dataItem.start_time
+            start_time: dataItem.start_time,
+            idUser: idUserPosventa
         }
 
         if(ticket === undefined){
-            await this.clientFresh.crearTicketPostVenta(dataMensajePostVenta, event.data.resource)
-
+            if(mensajePostVenta.messages[0].from.user_id !== Number(mensajePostVenta.messages[0].message_resources[1].id)){
+                await this.clientFresh.crearTicketPostVenta(dataMensajePostVenta, event.data.resource)
+            }
+            
         } else{
             const conversations = await this.clientFresh.getConversacionTicket(ticket.id)
             const infoTicket = await this.clientFresh.getTicket(ticket.id)
@@ -66,6 +70,7 @@ class ContainerExternalEvents {
 
             if(!textsConversations.includes(mensajePostVenta.messages[0].text.trim())){
                 await this.clientFresh.responderConversacion(ticket.id, mensajePostVenta.messages[0].text)
+                
             } else{
                 console.log(`El mensaje postventa ya está en el ticket: ${ticket.id}`)
             }

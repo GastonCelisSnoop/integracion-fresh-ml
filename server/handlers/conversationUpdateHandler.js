@@ -7,11 +7,11 @@ const handlerConversationUpdate = async (event) =>{
 
     const dataTicket = await clientFresh.getTicket(event.data.conversation.ticket_id)
 
-    if(dataTicket.custom_fields.cf_id_ml_posventa && dataTicket.custom_fields.cf_id_reclamoml === null) {
+    if(dataTicket.custom_fields.cf_id_mlposventa && dataTicket.custom_fields.cf_id_user_posventa && dataTicket.custom_fields.cf_id_reclamoml === null) {
         await conversationContainer.handlerRespuestaPostventa(event, dataTicket)
     }
 
-    if(dataTicket.custom_fields.cf_id_reclamoml && dataTicket.custom_fields.cf_id_ml_posventa === null){
+    if(dataTicket.custom_fields.cf_id_reclamoml && dataTicket.custom_fields.cf_id_mlposventa === null){
         await conversationContainer.handlerRespuestaReclamo(event, dataTicket)
     }
 }

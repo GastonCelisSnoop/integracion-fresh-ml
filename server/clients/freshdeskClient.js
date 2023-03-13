@@ -108,7 +108,8 @@ class FreshdeskClient {
                 priority: 1,
                 status: 2,
                 custom_fields: {
-                    "cf_id_mlposventa": idMensaje
+                    "cf_id_mlposventa": idMensaje,
+                    "cf_id_user_posventa": dataMensajePostVenta.idUser
                 }
             }
         };
