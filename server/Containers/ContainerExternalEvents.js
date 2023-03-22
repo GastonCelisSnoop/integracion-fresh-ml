@@ -80,7 +80,8 @@ class ContainerExternalEvents {
     async handlerTktReclamo(event){
         const idReclamo = event.data.resource.split('/')[3]
         const mensajeReclamo = await this.clienteML.getMensajeReclamo(idReclamo)
-        const ultimoReclamo = mensajeReclamo.filter(mensaje => mensaje.sender_role === 'complainant')[0]
+        const reclamos = mensajeReclamo.filter(msj => msj.stage === 'claim')
+        const ultimoReclamo = reclamos.filter(mensaje => mensaje.sender_role === 'complainant')[0]
         const allTickets = await this.clientFresh.getAllTickets()
         const ticket = allTickets.find(ticket => Number(ticket.custom_fields.cf_id_reclamoml) === Number(idReclamo))
         const detalleReclamo = await this.clienteML.getDetalleReclamo(idReclamo)
@@ -90,20 +91,51 @@ class ContainerExternalEvents {
         const idItem = dataOrden.order_items[0].item.id
         const dataItem = await this.clienteML.getItem(idItem)
 
-        const dataMensajeReclamo = {
-            usuario: usuario,
-            text: ultimoReclamo.message,
-            link: dataItem.permalink,
-            title: dataItem.title,
-            pictures: dataItem.pictures,
-            price: dataItem.price,
-            initial_quantity: dataItem.initial_quantity,
-            available_quantity: dataItem.available_quantity,
-            start_time: dataItem.start_time
-        }
-
         if(ticket === undefined){
-            await this.clientFresh.crearTicketReclamo(dataMensajeReclamo, idReclamo)
+            if(reclamos.length === 1){
+                const dataMensajeReclamo = {
+                    usuario: usuario,
+                    text: ultimoReclamo.message,
+                    link: dataItem.permalink,
+                    title: dataItem.title,
+                    pictures: dataItem.pictures,
+                    price: dataItem.price,
+                    initial_quantity: dataItem.initial_quantity,
+                    available_quantity: dataItem.available_quantity,
+                    start_time: dataItem.start_time
+                }
+    
+                await this.clientFresh.crearTicketReclamo(dataMensajeReclamo, idReclamo)
+            } else{
+                let idTicketCreado
+                const reclamosOrdenados = reclamos.reverse()
+
+                const dataMensajeReclamo = {
+                    usuario: usuario,
+                    text: reclamosOrdenados[0].message,
+                    link: dataItem.permalink,
+                    title: dataItem.title,
+                    pictures: dataItem.pictures,
+                    price: dataItem.price,
+                    initial_quantity: dataItem.initial_quantity,
+                    available_quantity: dataItem.available_quantity,
+                    start_time: dataItem.start_time
+                }
+    
+                idTicketCreado = await this.clientFresh.crearTicketReclamo(dataMensajeReclamo, idReclamo)
+
+                for (let index = 0; index < reclamosOrdenados.length; index++) {
+                    if(index !== 0){
+                        if(reclamosOrdenados[index].sender_role === 'respondent'){
+                            await this.clientFresh.responderConversacion(idTicketCreado, reclamosOrdenados[index].message)
+                        }
+                        
+                        if(reclamosOrdenados[index].sender_role === 'complainant'){
+                            await this.clientFresh.responderConversacion(idTicketCreado, `<p style="padding: 15px; background-color: #EEED94; border-radius: 5px">Reclamo desde ML: ${reclamosOrdenados[index].message}</p>`)
+                        }
+                    } 
+                }
+            }
 
         } else{
             const conversations = await this.clientFresh.getConversacionTicket(ticket.id)

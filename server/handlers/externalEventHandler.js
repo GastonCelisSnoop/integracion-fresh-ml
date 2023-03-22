@@ -2,7 +2,7 @@ const ContainerExternalEvents = require('../Containers/ContainerExternalEvents')
 
 const handleExternalEvent = async (event) => {
     const externalEvents = new ContainerExternalEvents()
-    console.log({event})
+
     switch (event.data.topic) {
         case 'questions':
             await externalEvents.handlerTktPreVenta(event)

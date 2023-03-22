@@ -1,12 +1,12 @@
 {
   "data": {
-    "_id": "da0918e1-0e8d-4fbd-9024-a5e427f5c967",
+    "_id": "abf56b5c-e71f-48b6-9ffc-2c136efb2389",
     "topic": "claims",
     "resource": "/v1/claims/5180404646",
     "user_id": 1168105783,
     "application_id": 4902771371848937,
-    "sent": "2023-03-13T13:49:10.486Z",
+    "sent": "2023-03-13T13:49:06.319Z",
     "attempts": 1,
-    "received": "2023-03-13T13:49:10.387Z"
+    "received": "2023-03-13T13:49:06.092Z"
   }
 }

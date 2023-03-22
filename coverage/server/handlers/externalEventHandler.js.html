@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">53.84% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/14</span>
+                <span class='fraction'>7/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">53.84% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/14</span>
+                <span class='fraction'>7/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -85,46 +85,46 @@
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">Infinityx</span>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1.167984798111282e+195x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">Infinityx</span>
-<span class="cline-any cline-yes">Infinityx</span>
-<span class="cline-any cline-yes">Infinityx</span>
-<span class="cline-any cline-yes">Infinityx</span>
+<span class="cline-any cline-yes">1.167984798111282e+195x</span>
+<span class="cline-any cline-yes">1.167984798111282e+195x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">Infinityx</span>
-<span class="cline-any cline-yes">Infinityx</span>
+<span class="cline-any cline-yes">1.167984798111282e+195x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">Infinityx</span>
-<span class="cline-any cline-yes">Infinityx</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">Infinityx</span>
-<span class="cline-any cline-yes">Infinityx</span>
+<span class="cline-any cline-yes">1.167984798111282e+195x</span>
+<span class="cline-any cline-yes">9.12488123524439e+192x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">Infinityx</span>
+<span class="cline-any cline-yes">1.167984798111282e+195x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const ContainerExternalEvents = require('../Containers/ContainerExternalEvents')
 &nbsp;
 const handleExternalEvent = async (event) =&gt; {
     const externalEvents = new ContainerExternalEvents()
-    console.log({event})
+&nbsp;
     switch (event.data.topic) {
-        case 'questions':
-            await externalEvents.handlerTktPreVenta(event)
-            break;
+<span class="branch-0 cbranch-no" title="branch not covered" >        case 'questions':</span>
+<span class="cstat-no" title="statement not covered" >            await externalEvents.handlerTktPreVenta(event)</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
 <span class="branch-1 cbranch-no" title="branch not covered" >        case 'messages':</span>
 <span class="cstat-no" title="statement not covered" >            await externalEvents.handlerTktPostVenta(event)</span>
 <span class="cstat-no" title="statement not covered" >            break;</span>
         case 'claims':
             await externalEvents.handlerTktReclamo(event)
             break;
-        case 'orders_v2':
-            await externalEvents.handlerCompra(event)
-            break;
+<span class="branch-3 cbranch-no" title="branch not covered" >        case 'orders_v2':</span>
+<span class="cstat-no" title="statement not covered" >            await externalEvents.handlerCompra(event)</span>
+<span class="cstat-no" title="statement not covered" >            break;</span>
     }
 };
 &nbsp;
@@ -136,7 +136,7 @@ exports = handleExternalEvent
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-13T13:08:08.107Z
+                at 2023-03-22T12:26:13.213Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

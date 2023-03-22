@@ -57,15 +57,18 @@ class FreshdeskClient {
             }
         };
 
-        await axios.request(options)
+        const request = await axios.request(options)
             .then(response => {
                 console.log(`ID del TKT: ${response.data.id}`)
                 console.log("Se generó el TKT preventa correctamente");
+                return response.data.id
             })
             .catch(error => {
                 console.log("Error al generar el TKT preventa")
                 console.error(error.response.data);
             });
+
+        return request
     }
 
     async crearTicketPostVenta(dataMensajePostVenta, idMensaje) {
@@ -114,15 +117,18 @@ class FreshdeskClient {
             }
         };
 
-        await axios.request(options)
+        const request = await axios.request(options)
             .then(response => {
                 console.log(`ID del TKT: ${response.data.id}`)
                 console.log("Se generó el TKT postventa correctamente");
+                return response.data.id
             })
             .catch(error => {
                 console.log("Error al generar el TKT postventa")
                 console.error(error.response.data);
             });
+
+        return request
     }
 
     async crearTicketReclamo(dataMensajeReclamo, idReclamo) {
@@ -168,15 +174,18 @@ class FreshdeskClient {
             }
         };
 
-        await axios.request(options)
+        const request = await axios.request(options)
             .then(response => {
                 console.log(`ID del TKT de reclamo: ${response.data.id}`)
                 console.log("Se generó el TKT reclamo de postventa correctamente");
+                return response.data.id
             })
             .catch(error => {
                 console.log("Error al generar el TKT reclamo de postventa")
                 console.error(error.response.data);
             });
+
+        return request
     }
 
     async getAllTickets() {
